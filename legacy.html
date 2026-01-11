@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Legacy | Minecraft Java Сервер 1.21.10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-space: #0a0a0f;
+            --cosmic-black: #0f0f1a;
+            --nebula-dark: #151522;
+            --void-black: #050508;
+            --cyber-blue: #00d9ff;
+            --matrix-green: #00ff88;
+            --hologram-purple: #9d4edd;
+            --neon-red: #ff0055;
+            --plasma-gold: #ffaa00;
+            --text-glow: #e0e0ff;
+            --text-dim: #a0a0c0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: 
+                radial-gradient(ellipse at top, var(--cosmic-black) 0%, var(--void-black) 100%),
+                linear-gradient(to bottom, var(--deep-space) 0%, var(--nebula-dark) 100%);
+            color: var(--text-glow);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Космический фон с сеткой */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Звезды */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
+        
+        /* Неоновые элементы */
+        .neon-glow {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--cyber-blue) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, var(--matrix-green) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, var(--hologram-purple) 0%, transparent 50%);
+            filter: blur(100px);
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Навигация - киберпанк стиль */
+        nav {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            margin-bottom: 80px;
+            position: relative;
+        }
+        
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--cyber-blue), 
+                var(--matrix-green), 
+                var(--hologram-purple), 
+                transparent);
+            animation: scanline 3s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--matrix-green);
+            text-shadow: 
+                0 0 20px var(--matrix-green),
+                0 0 40px var(--matrix-green);
+            animation: glitch 3s infinite alternate;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 1px); }
+            94% { transform: translate(1px, -2px); }
+            96% { transform: translate(-1px, 2px); }
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--matrix-green), var(--hologram-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .version-badge {
+            background: linear-gradient(45deg, var(--nebula-dark), var(--cosmic-black));
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid var(--cyber-blue);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+            margin-left: 20px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 10px 20px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .nav-link:hover {
+            color: var(--matrix-green);
+            border: 1px solid var(--matrix-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Главный заголовок */
+        .hero {
+            text-align: center;
+            padding: 100px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: 'NATURAL LEGACY';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', monospace;
+            font-size: 15rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            white-space: nowrap;
+            z-index: -1;
+            letter-spacing: 30px;
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--matrix-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 50px rgba(0, 217, 255, 0.5);
+            letter-spacing: 3px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: var(--text-dim);
+            max-width: 900px;
+            margin: 0 auto 60px;
+            line-height: 1.8;
+            font-weight: 300;
+            text-shadow: 0 0 10px rgba(160, 160, 192, 0.3);
+        }
+        
+        /* Карточка сервера - киберпанк */
+        .server-card {
+            background: linear-gradient(145deg, 
+                rgba(10, 10, 15, 0.9), 
+                rgba(21, 21, 34, 0.9));
+            border-radius: 20px;
+            padding: 60px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 50px rgba(0, 217, 255, 0.1);
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .server-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--cyber-blue), 
+                var(--matrix-green), 
+                var(--hologram-purple));
+        }
+        
+        .ip-display {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .ip-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+        
+        .ip-address {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--matrix-green), var(--plasma-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: rgba(5, 5, 8, 0.6);
+            border: 2px solid rgba(0, 217, 255, 0.4);
+            display: inline-block;
+            margin: 20px 0;
+            transition: all 0.4s;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ip-address::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .ip-address:hover::before {
+            left: 100%;
+        }
+        
+        .ip-address:hover {
+            transform: scale(1.03);
+            border-color: var(--matrix-green);
+            box-shadow: 
+                0 0 50px rgba(0, 255, 136, 0.4),
+                inset 0 0 30px rgba(0, 255, 136, 0.1);
+        }
+        
+        /* Кнопки - неоновые */
+        .buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 20px 45px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--cyber-blue), #0077ff);
+            color: white;
+            box-shadow: 
+                0 15px 35px rgba(0, 119, 255, 0.4),
+                0 0 30px rgba(0, 217, 255, 0.5);
+            border: 2px solid var(--cyber-blue);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 25px 50px rgba(0, 119, 255, 0.6),
+                0 0 50px rgba(0, 217, 255, 0.8);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, var(--matrix-green), #00cc66);
+            color: white;
+            box-shadow: 
+                0 15px 35px rgba(0, 204, 102, 0.4),
+                0 0 30px rgba(0, 255, 136, 0.5);
+            border: 2px solid var(--matrix-green);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 25px 50px rgba(0, 204, 102, 0.6),
+                0 0 50px rgba(0, 255, 136, 0.8);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(45deg, var(--hologram-purple), #7b2cbf);
+            color: white;
+            box-shadow: 
+                0 15px 35px rgba(123, 44, 191, 0.4),
+                0 0 30px rgba(157, 78, 221, 0.5);
+            border: 2px solid var(--hologram-purple);
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 25px 50px rgba(123, 44, 191, 0.6),
+                0 0 50px rgba(157, 78, 221, 0.8);
+        }
+        
+        /* Информационные карточки */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            margin: 80px 0;
+        }
+        
+        .info-card {
+            background: linear-gradient(145deg, 
+                rgba(15, 15, 26, 0.8), 
+                rgba(10, 10, 20, 0.8));
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--cyber-blue), var(--matrix-green));
+            transition: all 0.4s;
+        }
+        
+        .info-card:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--cyber-blue);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(0, 217, 255, 0.2);
+        }
+        
+        .info-card-icon {
+            font-size: 3rem;
+            color: var(--matrix-green);
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .info-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-glow);
+            text-shadow: 0 0 15px rgba(224, 224, 255, 0.3);
+        }
+        
+        .info-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        
+        /* Секция вступления */
+        .join-section {
+            background: linear-gradient(135deg, 
+                rgba(0, 217, 255, 0.05), 
+                rgba(0, 255, 136, 0.05));
+            border-radius: 25px;
+            padding: 70px;
+            margin: 100px 0;
+            text-align: center;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .join-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--cyber-blue), 
+                var(--matrix-green), 
+                var(--hologram-purple));
+        }
+        
+        .join-section h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            margin-bottom: 50px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--matrix-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 40px rgba(0, 217, 255, 0.5);
+        }
+        
+        /* Шаги */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .step {
+            background: rgba(10, 10, 20, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 217, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .step:hover {
+            border-color: var(--matrix-green);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--matrix-green);
+            color: var(--void-black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .step h3 {
+            color: var(--matrix-green);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        /* Правила */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .rule-card {
+            background: rgba(15, 15, 30, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--neon-red);
+            transition: all 0.3s;
+        }
+        
+        .rule-card.allowed {
+            border-left-color: var(--matrix-green);
+        }
+        
+        .rule-card.encouraged {
+            border-left-color: var(--plasma-gold);
+        }
+        
+        .rule-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        .rule-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .rule-card .rule-icon {
+            color: var(--neon-red);
+        }
+        
+        .rule-card.allowed .rule-icon {
+            color: var(--matrix-green);
+        }
+        
+        .rule-card.encouraged .rule-icon {
+            color: var(--plasma-gold);
+        }
+        
+        /* Футер */
+        footer {
+            margin-top: 120px;
+            padding: 80px 0 50px;
+            border-top: 1px solid rgba(0, 217, 255, 0.2);
+            text-align: center;
+            background: rgba(5, 5, 12, 0.7);
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--cyber-blue), 
+                var(--matrix-green), 
+                var(--hologram-purple));
+        }
+        
+        .footer-logo {
+            font-size: 4rem;
+            color: var(--matrix-green);
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .social-link {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 217, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--text-glow);
+            transition: all 0.4s;
+            text-decoration: none;
+            border: 2px solid transparent;
+        }
+        
+        .social-link:hover {
+            background: var(--matrix-green);
+            color: var(--void-black);
+            transform: translateY(-10px) rotate(15deg);
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.7);
+        }
+        
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 40px;
+            line-height: 1.6;
+        }
+        
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(45deg, var(--matrix-green), var(--cyber-blue));
+            color: var(--void-black);
+            padding: 25px 35px;
+            border-radius: 15px;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(0, 255, 136, 0.5);
+            transform: translateX(500px);
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 30px;
+            }
+            
+            .hero h1 {
+                font-size: 3.8rem;
+            }
+            
+            .hero::before {
+                font-size: 12rem;
+                letter-spacing: 20px;
+            }
+            
+            .ip-address {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .info-grid,
+            .steps,
+            .rules-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .server-card {
+                padding: 40px 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 25px;
+                margin-bottom: 60px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero::before {
+                font-size: 8rem;
+                letter-spacing: 10px;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .ip-address {
+                font-size: 2rem;
+                padding: 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 350px;
+                justify-content: center;
+            }
+            
+            .info-grid,
+            .steps,
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .join-section {
+                padding: 40px 20px;
+            }
+            
+            .join-section h2 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .version-badge {
+                font-size: 0.8rem;
+                padding: 6px 15px;
+            }
+            
+            .ip-address {
+                font-size: 1.6rem;
+            }
+            
+            .btn {
+                padding: 18px 25px;
+                font-size: 1rem;
+            }
+            
+            .info-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Космический фон -->
+    <div class="neon-glow"></div>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- Навигация -->
+        <nav>
+            <div class="logo">
+                <i class="fas fa-satellite-dish logo-icon"></i>
+                <div>
+                    <div class="logo-text">NATURAL LEGACY</div>
+                    <div class="version-badge">v1.21.10</div>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#server" class="nav-link"><i class="fas fa-server"></i> СЕРВЕР</a>
+                <a href="#join" class="nav-link"><i class="fas fa-users"></i> ВСТУПЛЕНИЕ</a>
+                <a href="#info" class="nav-link"><i class="fas fa-terminal"></i> ИНФО</a>
+                <a href="#rules" class="nav-link"><i class="fas fa-gavel"></i> ПРАВИЛА</a>
+            </div>
+        </nav>
+        
+        <!-- Главный заголовок -->
+        <section class="hero animate">
+            <h1>ВХОД В СИСТЕМУ: NATURAL LEGACY</h1>
+            <p class="hero-subtitle">
+                СИСТЕМА: MINECRAFT JAVA EDITION 1.21.10<br>
+                РЕЖИМ: ВАНИЛЬНОЕ ВЫЖИВАНИЕ<br>
+                СТАТУС: ОНЛАЙН | БЕЛЫЙ СПИСОК АКТИВИРОВАН
+            </p>
+        </section>
+        
+        <!-- Карточка сервера -->
+        <section id="server" class="server-card animate">
+            <div class="ip-display">
+                <div class="ip-label">СЕРВЕРНЫЙ АДРЕС</div>
+                <div class="ip-address" id="server-ip">89.248.236.147:27115</div>
+                <div style="color: var(--text-dim); margin-top: 15px; font-family: 'Orbitron';">
+                    ВЕРСИЯ: <span style="color: var(--plasma-gold);">1.21.10</span> | ТИП: <span style="color: var(--matrix-green);">ВАНИЛЬ</span> | БЕЛЫЙ СПИСОК: <span style="color: var(--cyber-blue);">АКТИВЕН</span>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" id="copy-ip">
+                    <i class="fas fa-copy"></i> КОПИРОВАТЬ IP
+                </button>
+                <a href="https://t.me/+W-YR9R8OmSgwNjQy" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-telegram"></i> TELEGRAM ЧАТ
+                </a>
+                <button class="btn btn-accent" id="quick-connect">
+                    <i class="fas fa-bolt"></i> БЫСТРЫЙ ВХОД
+                </button>
+            </div>
+        </section>
+        
+        <!-- Информационные карточки -->
+        <div class="info-grid" id="info">
+            <div class="info-card animate">
+                <div class="info-card-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>ЗАЩИТА СИСТЕМЫ</h3>
+                <p>Белый список активирован. Для получения доступа отправьте ваш никнейм в Telegram-чат и ожидайте авторизации.</p>
+            </div>
+            
+            <div class="info-card animate">
+                <div class="info-card-icon">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <h3>ЧИСТАЯ ВЕРСИЯ</h3>
+                <p>100% ванильный геймплей. Никаких модификаций, только чистая последняя версия Minecraft 1.21.10.</p>
+            </div>
+            
+            <div class="info-card animate">
+                <div class="info-card-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3>АКТИВНОЕ СООБЩЕСТВО</h3>
+                <p>Стабильный аптайм, активные игроки, взаимопомощь. Нулевая толерантность к гриферству.</p>
+            </div>
+        </div>
+        
+        <!-- Секция вступления -->
+        <section id="join" class="join-section animate">
+            <h2>ПРОЦЕДУРА ПОДКЛЮЧЕНИЯ</h2>
+            
+            <div class="steps">
+                <div class="step animate">
+                    <div class="step-number">1</div>
+                    <h3><i class="fas fa-comment-alt"></i> TELEGRAM ЧАТ</h3>
+                    <p>Присоединитесь к нашему чату по кнопке выше</p>
+                </div>
+                
+                <div class="step animate">
+                    <div class="step-number">2</div>
+                    <h3><i class="fas fa-user-tag"></i> НИКНЕЙМ</h3>
+                    <p>Отправьте ваш Minecraft никнейм в чат</p>
+                </div>
+                
+                <div class="step animate">
+                    <div class="step-number">3</div>
+                    <h3><i class="fas fa-clock"></i> ОЖИДАНИЕ</h3>
+                    <p>Администратор добавит вас в белый список</p>
+                </div>
+                
+                <div class="step animate">
+                    <div class="step-number">4</div>
+                    <h3><i class="fas fa-plug"></i> ПОДКЛЮЧЕНИЕ</h3>
+                    <p>Введите IP-адрес в Minecraft и начинайте игру</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Правила сервера -->
+        <section id="rules" class="animate">
+            <h2 style="font-size: 3rem; margin-bottom: 50px; text-align: center; font-family: 'Orbitron'; color: var(--cyber-blue);">
+                <i class="fas fa-exclamation-triangle"></i> СИСТЕМНЫЕ ПРАВИЛА
+            </h2>
+            
+            <div class="rules-grid">
+                <div class="rule-card animate">
+                    <div class="rule-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3>ЗАПРЕЩЕНО</h3>
+                    <p>• Гриферство и воровство<br>• Использование читов<br>• Оскорбления и токсичность<br>• Лаг-машины</p>
+                </div>
+                
+                <div class="rule-card allowed animate">
+                    <div class="rule-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>РАЗРЕШЕНО</h3>
+                    <p>• Любое строительство<br>• Совместные проекты<br>• Честная торговля<br>• PvP по согласию</p>
+                </div>
+                
+                <div class="rule-card encouraged animate">
+                    <div class="rule-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>ПРИВЕТСТВУЕТСЯ</h3>
+                    <p>• Активность в чате<br>• Помощь новичкам<br>• Креативные постройки<br>• Организация ивентов</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Футер -->
+        <footer class="animate">
+            <div class="footer-logo">
+                <i class="fas fa-satellite"></i>
+            </div>
+            <div style="font-family: 'Orbitron'; font-size: 2rem; font-weight: 700; margin-bottom: 20px; color: var(--matrix-green);">
+                NATURAL LEGACY
+            </div>
+            <div style="color: var(--text-dim); margin-bottom: 40px; font-size: 1.1rem;">
+                MINECRAFT JAVA SERVER • VERSION 1.21.10 • VANILLA SURVIVAL
+            </div>
+            
+            <div class="social-links">
+                <a href="https://t.me/+W-YR9R8OmSgwNjQy" target="_blank" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <div class="copyright">
+                © 2024 NATURAL LEGACY MINECRAFT SERVER. ВСЕ ПРАВА ЗАЩИЩЕНЫ.<br>
+                MINECRAFT ЯВЛЯЕТСЯ ТОВАРНЫМ ЗНАКОМ MOJANG AB. СЕРВЕР НЕ АФФИЛИРОВАН С MOJANG.
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <div style="font-weight: 700;">IP-АДРЕС СКОПИРОВАН</div>
+            <div style="font-size: 0.9em; opacity: 0.9;">ВСТАВЬТЕ В MINECRAFT</div>
+        </div>
+    </div>
+    
+    <script>
+        // Создание звездного неба
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 3 + 2;
+                const brightness = Math.random() * 0.8 + 0.2;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+                star.style.opacity = brightness;
+                star.style.animationDelay = `${delay}s`;
+                star.style.animationDuration = `${duration}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Анимация появления элементов
+        function initAnimations() {
+            const elements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Копирование IP-адреса
+        document.getElementById('copy-ip').addEventListener('click', function() {
+            const ip = '89.248.236.147:27115';
+            
+            // Создаем эффект нажатия
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // Копируем в буфер обмена
+            navigator.clipboard.writeText(ip).then(() => {
+                showNotification();
+            }).catch(err => {
+                // Fallback для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = ip;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification();
+            });
+        });
+        
+        // Быстрое подключение
+        document.getElementById('quick-connect').addEventListener('click', function() {
+            const ip = '89.248.236.147:27115';
+            const minecraftUri = `minecraft://?addExternalServer=${encodeURIComponent('Natural Legacy')}|${ip}`;
+            
+            // Эффект нажатия
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // Пробуем открыть Minecraft
+            window.location.href = minecraftUri;
+            
+            // Резервный вариант
+            setTimeout(() => {
+                if (confirm('Не удалось открыть Minecraft. Скопировать IP-адрес в буфер обмена?')) {
+                    navigator.clipboard.writeText(ip);
+                    showNotification();
+                }
+            }, 1000);
+        });
+        
+        // Показать уведомление
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Эффект параллакса для фона
+        window.addEventListener('mousemove', function(e) {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelector('.neon-glow').style.transform = 
+                `translate(${x * 20}px, ${y * 20}px)`;
+        });
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            initAnimations();
+            
+            // Добавляем эффект печатающего текста для заголовка
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            
+            setTimeout(typeWriter, 500);
+            
+            // Случайные вспышки неонового свечения
+            setInterval(() => {
+                const glow = document.querySelector('.neon-glow');
+                glow.style.opacity = Math.random() * 0.2 + 0.2;
+                setTimeout(() => {
+                    glow.style.opacity = 0.3;
+                }, 200);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
