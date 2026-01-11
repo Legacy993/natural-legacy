@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Legacy Minecraft Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c2e1d 0%, #1a5c3a 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(10, 40, 25, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            border: 3px solid #4CAF50;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #c8e6c9;
+            font-size: 1.2rem;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(20, 50, 35, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #2E7D32;
+        }
+        
+        .card h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 i {
+            font-size: 1.8rem;
+        }
+        
+        .ip-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #4CAF50;
+        }
+        
+        .ip-address {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #388E3C;
+            transform: scale(1.05);
+        }
+        
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+        
+        .telegram-btn:hover {
+            background: #0077b5;
+        }
+        
+        .instruction {
+            background: rgba(76, 175, 80, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4CAF50;
+        }
+        
+        ol {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #2E7D32;
+            color: #a5d6a7;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tree"></i>
+            </div>
+            <h1>Natural Legacy</h1>
+            <p class="subtitle">Официальный сайт Minecraft сервера | Java Edition 1.20+</p>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <h2><i class="fas fa-server"></i> Подключение к серверу</h2>
+                
+                <div class="ip-box">
+                    <p><strong>IP-адрес сервера:</strong></p>
+                    <div class="ip-address" id="ip">89.248.236.147:27115</div>
+                    <button class="copy-btn" onclick="copyIP()">
+                        <i class="fas fa-copy"></i> Скопировать IP
+                    </button>
+                </div>
+                
+                <div class="instruction">
+                    <h3><i class="fas fa-gamepad"></i> Как подключиться:</h3>
+                    <ol>
+                        <li>Откройте Minecraft Java Edition 1.20+</li>
+                        <li>Нажмите "Сетевая игра" → "Добавить сервер"</li>
+                        <li>Введите IP-адрес выше</li>
+                        <li>Сохраните и присоединяйтесь!</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-users"></i> Вступление на сервер</h2>
+                
+                <p>Сервер работает с системой белого списка для защиты от гриферов.</p>
+                
+                <div class="instruction">
+                    <h3><i class="fas fa-list-check"></i> Как попасть в белый список:</h3>
+                    <ol>
+                        <li>Вступите в Telegram-чат сервера</li>
+                        <li>Напишите свой никнейм Minecraft</li>
+                        <li>Ожидайте добавления (до 1 часа)</li>
+                        <li>После подтверждения заходите на сервер!</li>
+                    </ol>
+                </div>
+                
+                <a href="https://t.me/+W-YR9R8OmSgwNjQy" target="_blank" class="telegram-btn">
+                    <i class="fab fa-telegram"></i> Telegram-чат сервера
+                </a>
+                
+                <div style="margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <p><i class="fas fa-info-circle"></i> <strong>Сервер:</strong> Java 1.20+ | Выживание | Белый список</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2024 Natural Legacy Minecraft Server</p>
+            <p>Сайт размещен на GitHub Pages | Обновлено: 2024</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check"></i> IP-адрес скопирован!
+    </div>
+    
+    <script>
+        function copyIP() {
+            const ip = document.getElementById('ip').innerText;
+            navigator.clipboard.writeText(ip);
+            
+            // Показываем уведомление
+            const notif = document.getElementById('notification');
+            notif.style.display = 'block';
+            setTimeout(() => {
+                notif.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Автоматически открываем сайт если это GitHub Pages
+        if(window.location.hostname.includes('github.io')) {
+            console.log('GitHub Pages работает!');
+        }
+    </script>
+</body>
+</html>
